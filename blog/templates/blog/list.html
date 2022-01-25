@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Blog
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:blog_list' %}">
+                    New
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'blog:blog_list' %}?order=total_views">
+                    Hot
+                </a>
+            </li>
+        </ol>
+    </nav>
+    <div class="row mt-2">
+        {% for blog in blogs %}
+        <div class="col-4 mb-4">
+            <div class="card h-100">
+                <h4 class="card-header">{{ blog.title }}</h4>
+                <div class="card-body">
+                    <p class="card-text">{{ blog.body|slice:'50'|safe }}...</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'blog:blog_detail' blog.id %}" class="btn btn-info">read</a>
+                    <a href="{% url 'blog:blog_delete' blog.id %}" class="btn btn-warning">delete</a>
+                    <span>
+                            <small class="col align-self-end" style="color: gray;">
+                                views: {{ blog.total_views }}
+                            </small>
+                            </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{#
+<div class="container mt-3">#}
+    {#
+    <table class="table">#}
+        {#
+        <tbody>#}
+        {# {% for blog in blogs %}#}
+        {#
+        <tr>#}
+            {#
+            <td>{{ blog.title }}</td>
+            #}
+            {#
+            <td>{{ blog.body|slice:'100' }}</td>
+            #}
+            {#
+            <td class="card-footer">#}
+                {# <a href="{% url 'blog:blog_detail' blog.id %}" class="btn btn-primary">read</a>#}
+                {#
+            </td>
+            #}
+            {#
+        </tr>
+        #}
+        {# {% endfor %}#}
+        {#
+        </tbody>
+        #}
+        {#
+    </table>
+    #}
+    {#
+</div>#}
+<div class="pagination row">
+    <div class="m-auto">
+        <span class="step-links">
+            {% if blogs.has_previous %}
+                <a href="?page=1" class="btn btn-success">
+                    &laquo; 1
+                </a>
+                <span>...</span>
+                <a href="?page={{ blogs.previous_page_number }}"
+                   class="btn btn-secondary"
+                >
+                    {{ blogs.previous_page_number }}
+                </a>
+            {% endif %}
+            <span class="current btn btn-danger btn-lg">
+                {{ blogs.number }}
+            </span>
+            {% if blogs.has_next %}
+                <a href="?page={{ blogs.next_page_number }}"
+                   class="btn btn-secondary"
+                >
+                    {{ blogs.next_page_number }}
+                </a>
+                <span>...</span>
+                <a href="?page={{ blogs.paginator.num_pages }}"
+                   class="btn btn-success"
+                >
+                    {{ blogs.paginator.num_pages }} &raquo;
+                </a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}

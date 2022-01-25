@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+blog
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <h1 class="col-12 mt-4">{{ blog.title }}</h1>
+            <div class="col-12 alert alert-success">blogger: {{ blog.blogger }}</div>
+            {% if user == blog.blogger %}
+            .<a href="#" onclick="confirm_delete()">Delete</a>
+            .<a href="{% url " blog:blog_update" blog.id %}">Edit</a>
+            {% endif %}
+            <div>
+                &nbsp;&nbsp;views: {{ blog.total_views }}
+            </div>
+            <div class="col-12">
+                <p>{{ blog.body|safe }}</p>
+            </div>
+        </div>
+        {# contents #}
+        <div class="col-3 mt-4">
+            <h4>
+                <strong>contents</strong>
+                <hr>
+                <div>
+                    {{ toc|safe }}
+                </div>
+            </h4>
+        </div>
+    </div>
+</div>
+<script>
+    function confirm_delete() {
+        var r = confirm("Wanna delete?");
+        if (r === true) {
+            window.location = '{% url "blog:blog_delete" blog.id %}';
+        }
+    }
+</script>
+{% endblock content %}

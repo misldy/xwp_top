@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+messagelog
+{% endblock title %}
+{% block  content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <br>
+    <div>
+        <form action="." method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="body">
+                    <strong>
+                        Post a comment:
+                    </strong>
+                </label>
+                <textarea maxlength="100" type="text" class="form-control" id="body" name="body"
+                          rows="2"></textarea>
+                <strong> </strong>
+                <hr>
+                <span onclick="add('\u263A')" width="22" height="22">&#9786;</span>
+                <span onclick="add('\u263B')" width="22" height="22">&#9787;</span>
+                <span onclick="add('\u273F')" width="22" height="22">&#10047;</span>
+                <span onclick="add('\u2764')" width="22" height="22">&#10084;</span>
+                <span onclick="add('\uFFFD')" width="22" height="22">&#65533;</span>
+                <span onclick="add('\u26A1')" width="22" height="22">&#9889;</span>
+                <span onclick="add('\u266B')" width="22" height="22">&#9835;</span>
+                <span onclick="add('\u2693')" width="22" height="22">&#9875;</span>
+                <span onclick="add('\u2713')" width="22" height="22">&#10003;</span><br>
+                <span onclick="add('\u2648')" width="22" height="22">&#9800;</span>
+                <span onclick="add('\u2649')" width="22" height="22">&#9801;</span>
+                <span onclick="add('\u2651')" width="22" height="22">&#9809;</span>
+                <span onclick="add('\u272A')" width="22" height="22">&#10026;</span>
+                <span onclick="add('\u2605')" width="22" height="22">&#9733;</span>
+                <span onclick="add('\u265B')" width="22" height="22">&#9819;</span>
+                <span onclick="add('\u2658')" width="22" height="22">&#9816;</span>
+                <span onclick="add('\u265A')" width="22" height="22">&#9818;</span>
+            </div>
+            <button type="submit" class="btn btn-primary">send</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        {% for message_log in message_logs %}
+        <hr>
+        <p>
+        <span style="color: green">
+            {{ message_log.created|date:"Y-m-d H:i:s" }}
+        </span>
+        <pre style="font-family: inherit; font-size: 1em;white-space: pre-wrap;word-wrap: break-word;">{{ message_log.body|safe }}</pre>
+        </p>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<br>
+
+<h5 class="row justify-content-center">
+    please<a href="{% url 'userprofile:login' %}">Login</a>
+</h5>
+<br>
+{% endif %}
+<script>
+    function add(value) {
+        document.getElementById('body').value += (value);
+    }
+</script>
+{% endblock content %}
